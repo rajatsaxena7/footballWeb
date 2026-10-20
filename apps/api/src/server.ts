@@ -6,13 +6,16 @@ import helmet from "helmet";
 import {pool} from "./db/pool.js"
 import { authRouter } from "./auth/auth.route.js";
 import { DatabaseError } from "pg";
+import cookieParser from "cookie-parser";
 const app = express();
 
 app.use(helmet());
+app.use(cookieParser())
 
 app.use(
   cors({
     origin: process.env.WEB_ORIGIN ?? "http://localhost:3000",
+    credentials:true
   }),
 );
 
@@ -58,6 +61,9 @@ app.get("/api/v1", (_req, res) => {
   });
 });
 
+
+app.use("/auth", authRouter);
+
 // Handle unknown routes
 app.use((_req, res) => {
   res.status(404).json({
@@ -83,7 +89,6 @@ app.use(
 
 const port = Number(process.env.PORT ?? 4000);
 
-app.use("/auth", authRouter);
 
 app.listen(port, () => {
   console.log(`🏟️ StadiumLive API running at http://localhost:${port}`);
