@@ -1,0 +1,52 @@
+﻿# Dependencies
+node_modules/
+.pnpm-store/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Build output
+.next/
+out/
+dist/
+build/
+coverage/
+
+# Turborepo
+.turbo/
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+
+# Testing
+playwright-report/
+test-results/
+
+# IDEs and editors
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Operating system
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local certificates and keys
+*.pem
+*.key
+*.crt
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
