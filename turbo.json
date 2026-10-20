@@ -3,7 +3,6 @@
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
     "dev": {
-      "dependsOn": [],
       "cache": false,
       "persistent": true
     },
@@ -18,8 +17,10 @@
       "dependsOn": ["^typecheck"]
     },
     "test": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^test"],
       "outputs": ["coverage/**"]
     }
-  }
+  },
+  "globalDependencies": ["**/.env.*local"],
+  "globalEnv": ["NODE_ENV"]
 }
