@@ -3,7 +3,9 @@ import "dotenv/config";
 import cors from "cors";
 import express from "express";
 import helmet from "helmet";
-
+import {pool} from "./db/pool.js"
+import { authRouter } from "./auth/auth.route.js";
+import { DatabaseError } from "pg";
 const app = express();
 
 app.use(helmet());
@@ -24,6 +26,28 @@ app.get("/health", (_req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
+
+
+app.get("/health/db",async (_req,res)=>{
+  try{
+    const result=await pool.query("SELECT NOW() AS database_time");
+
+    res.status(200).json({
+      status:"ok",
+      database:"connected",
+      timestamp:result.rows[0].database_time,
+    });
+  }
+  catch(error){
+    console.error("Database health check failed",error);
+
+    res.status(503).json({
+      status:"error",
+      database:"Unavailable"
+    })
+
+  }
+})
 
 // Basic API route
 app.get("/api/v1", (_req, res) => {
@@ -58,6 +82,8 @@ app.use(
 );
 
 const port = Number(process.env.PORT ?? 4000);
+
+app.use("/auth", authRouter);
 
 app.listen(port, () => {
   console.log(`🏟️ StadiumLive API running at http://localhost:${port}`);
